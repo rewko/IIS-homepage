@@ -44,10 +44,10 @@
              <h1><%=site.Name %></h1>   
              <ul>
              <% foreach (var app in site.Applications) { %>
-                <% string root = string.Format("{0}://{1}:{2}/{3}", site.Bindings[0].Protocol, Server.MachineName, site.Bindings[0].EndPoint.Port, app.Path.TrimStart('/')); %>
+                <% string root = string.Format("{0}://{1}:{2}/{3}", site.Bindings[0].Protocol, HttpContext.Current.Request.Url.Host, site.Bindings[0].EndPoint.Port, app.Path.TrimStart('/')); %>
                 <li>
                     <% if (app.VirtualDirectories.Count == 1) { %>
-                        <a href="<%= root %>" class="application"><%= app.Path.TrimStart('/') %></a>&nbsp;<span class="path">(<%=app.VirtualDirectories[0].PhysicalPath %>)</span>
+                        <a href="<%= root %>" class="application"><%= app.Path == "/" ? Server.MachineName.ToLower() : app.Path.TrimStart('/') %></a>&nbsp;<span class="path">(<%=app.VirtualDirectories[0].PhysicalPath %>)</span>
                     <% } else { %>
                         <a href="<%= root %>" class="directory"><%= app.Path == "/" ? Server.MachineName.ToLower() : app.Path.TrimStart('/') %></a>&nbsp;<span class="path">(<%=app.VirtualDirectories[0].PhysicalPath %>)</span>
                         <ul>
